@@ -1,0 +1,36 @@
+- PKA aksi perubahan. aplikasi untuk "optimalisasi peningkatan pajak  khusus di kecamatan silindak " 
+jngka pendek : sistem informasi (silindak) pajak. seperti aplikasi gosip . 
+- masyarakat bisa mengakses untuk pembayaran pajak, status, lebar lahannya, biayanya.. keterangannya.
+
+kendala : banyak data yang tidak aktif . perlu perubahan data dikarenakan data yang sebelumnya belum update. data yang di update sama dengan bphtb.
+dimana status data yang update. mengurangi kendala kecurangan. 
+
+- dashboard status pembayaran pajak. 9 desa. 
+- wajib pajak belum bayar, perbulan, pertahun,
+status bayar pajak 2 tahun sebelumnya 
+status tanah apakah masih update atau tidak (validasi) 
+
+
+query cari dengan NOP
+SELECT 
+	nama_wp, 
+	alamat_wp || ' ' || kelur alamat_wp, 
+	thn_sppt, 
+	yg_harus_byr, 
+	tgl_tempo,denda_ke_1 + denda_ke_2 + denda_ke_3 + denda_ke_4 jml_denda_sdh_byr,
+	bayar_ke_1 + bayar_ke_2 + bayar_ke_3 + bayar_ke_4 yg_sdh_dibayar, 
+	CASE 
+		WHEN   yg_harus_byr - (  (bayar_ke_1 + bayar_ke_2 + bayar_ke_3 + bayar_ke_4) - (denda_ke_1 + denda_ke_2 + denda_ke_3 + denda_ke_4)) <= 0 THEN 'Sdh Bayar' 
+		WHEN   yg_harus_byr - (  (bayar_ke_1 + bayar_ke_2 + bayar_ke_3 + bayar_ke_4) - (denda_ke_1 + denda_ke_2 + denda_ke_3 + denda_ke_4) ) = yg_harus_byr 
+		THEN 'Blm Bayar' 
+		ELSE 'Krg Bayar' 
+		END ket 
+		FROM v_sppt_vs_bayar 
+		WHERE kd_propinsi = " . $this->db->escape($satu) . " 
+		AND kd_dati2 = " . $this->db->escape($dua) . " 
+		AND kd_kecamatan = " . $this->db->escape($tiga) . " 
+		AND kd_kelurahan = " . $this->db->escape($empat) . " 
+		AND kd_blok = " . $this->db->escape($lima) . " 
+		AND no_urut = " . $this->db->escape($enam) . " 
+		AND kd_jns_op = " . $this->db->escape($tujuh) . " 
+		ORDER BY thn_sppt
