@@ -70,8 +70,8 @@
                                             <div class="grid grid-cols-12 gap-6">
                                                 <div
                                                     class="col-span-12 sm:col-span-6 lg:col-span-12 2xl:col-span-6 text-center">
-                                                    {{-- <canvas id="chart-performance-keseluruhan"
-                                                        class="mr-auto ml-auto"></canvas> --}}
+                                                    <canvas id="chart-performance-keseluruhan"
+                                                        class="mr-auto ml-auto"></canvas>
                                                 </div>
 
                                                 <div class="col-span-12 sm:col-span-6 lg:col-span-12 2xl:col-span-6">
@@ -86,13 +86,13 @@
                                                                 class="total-penerimaan">{{ number_format($data_penerimaan->total_penerimaan, 0, ',', '.') }}</span>
                                                         </div>
                                                     </div>
-                                                    {{-- <div
+                                                    <div
                                                         class="mt-5 xxl:flex xxl:justify-center xxl:mt-0 xxl:-ml-20 xxl:w-14 xxl:flex-none xxl:pl-2.5">
                                                         <div
                                                             class="font-medium inline-flex bg-theme-10 text-white rounded px-2 py-1 text-2xl xxl:text-3xl xxl:p-0 xxl:text-theme-10 xxl:bg-transparent xxl:flex items-center tooltip cursor-pointer xxl:justify-center">
                                                             <span class="persentase-penerimaan">29,83</span>%
                                                         </div>
-                                                    </div> --}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

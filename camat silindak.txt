@@ -11,6 +11,33 @@ status bayar pajak 2 tahun sebelumnya
 status tanah apakah masih update atau tidak (validasi) 
 
 
+Progress
+1. Visualisasi Data di dashboar
+	- Diagram batang/lingkaran status pajak per desa.
+	- Statistik tahunan dan perbandingan antar bulan/desa.
+2. Akun u pendaftaran pajak baru
+	- Bukti kepemilikan tanah, KTP wp 
+	- Berkas dijemput
+	- Validasi
+3. Syarat2 pendaftaran akun WP yg 2 td
+4. Photo bupati dan Wabup jg photo camat
+5. Ksh motto dlm aplikasi
+6. Data Wajib Pajak Dibagi perdesa
+
+Target Pajak Per desan dan Kecamatan silinda
+1. Tarean 			253709609
+2. Tapak Meriah 	76610616
+3. Damak Gelugur	104623567
+4. Sungai Buaya 	63508257
+5. Kulasar 			14994794
+6. Pamah 			32163473
+7. Batu Masagi 		33117087
+8. Pagar Manik 		28134177
+
+Total Targer Kecamatan Silinda 606852580
+
+
+
 query cari dengan NOP
 SELECT 
 	nama_wp, 

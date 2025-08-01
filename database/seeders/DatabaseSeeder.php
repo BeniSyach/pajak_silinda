@@ -12,11 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // Jalankan seeder untuk koneksi MySQL sekunder
+        $this->call(MysqlSecondaryUserSeeder::class);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Jalankan seeder untuk slogan
+        $this->call(SloganSeeder::class);
+        $this->call(TargetKecamatanSeeder::class);
+        $this->call(TargetPerDesaSeeder::class);
     }
 }

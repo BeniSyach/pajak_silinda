@@ -107,6 +107,20 @@ return [
             'strict'         => false,
             'engine'        => null,
         ],
+
+        'mysql_secondary' => [
+            'driver'      => 'mysql',
+            'host'        => env('MYSQL_HOST', '127.0.0.1'),
+            'port'        => env('MYSQL_PORT', '3306'),
+            'database'    => env('MYSQL_DATABASE', 'forge'),
+            'username'    => env('MYSQL_USERNAME', 'forge'),
+            'password'    => env('MYSQL_PASSWORD', ''),
+            'charset'     => 'utf8mb4',
+            'collation'   => 'utf8mb4_unicode_ci',
+            'prefix'      => '',
+            'strict'      => true,
+            'engine'      => null,
+        ],
     ],
 
     /*

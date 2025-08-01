@@ -5,6 +5,68 @@
 <body class="main">
 
     @include('layouts.partials.topbar')
+    @php
+        use App\Models\Slogan;
+        $slogans = Slogan::all();
+    @endphp
+
+    <div class="bg-gradient-to-r from-green-100 via-yellow-50 to-green-100 shadow rounded-xl my-10 mx-4 px-6 py-8">
+        <!-- Header Tengah -->
+        <div class="relative flex items-center justify-center mb-6">
+            <!-- Gambar Kiri -->
+            <div class="absolute left-0 flex items-center justify-center ml-4">
+                <img src="{{ asset('assets/img/bupati_dan_wakil.png') }}" alt="Bupati" width="200px">
+            </div>
+
+            <!-- Teks Tengah -->
+            <div class="text-center px-4">
+                <h2 class="text-2xl sm:text-3xl font-bold text-green-800 leading-snug">
+                    Selamat Datang di Aplikasi<br>
+                    <span class="text-yellow-600">SILINDAK</span>
+                </h2>
+            </div>
+
+            <!-- Gambar Kanan -->
+            <div class="absolute right-0 flex items-center justify-center mr-4">
+                <img src="{{ asset('assets/img/camat.png') }}" alt="Camat"
+                    class="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-full border-2 border-green-500 shadow-lg">
+            </div>
+        </div>
+
+        <!-- Slogan Berjalan -->
+        @if ($slogans->isNotEmpty())
+            <div class="overflow-hidden px-2">
+                <div
+                    class="inline-block animate-marquee text-lg sm:text-xl text-green-700 font-medium tracking-wide py-3 mt-5">
+                    @foreach ($slogans as $slogan)
+                        <span class="mx-10">🌟 {{ $slogan->isi }}</span>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+    </div>
+
+    <style>
+        @keyframes marquee {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .animate-marquee {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+        }
+    </style>
+
+
+
+
     @include('layouts.partials.topnav')
 
 

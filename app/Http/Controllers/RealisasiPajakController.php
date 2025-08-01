@@ -65,35 +65,49 @@ class RealisasiPajakController extends Controller
     
     public function history($nop)
     {
-        $history = DB::table('v_sppt_vs_bayar as vs')
-            ->selectRaw("
-                vs.THN_SPPT,
-                vs.YG_HARUS_BYR,
-                vs.TGL_TEMPO,
+        // 1. Pecah NOP menjadi 7 bagian
+        $parts = explode('.', $nop);
+        if (count($parts) !== 7) {
+            abort(400, 'Format NOP tidak valid.');
+        }
+    
+        [$satu, $dua, $tiga, $empat, $lima, $enam, $tujuh] = $parts;
+    
+        // 2. Jalankan query
+        $history = DB::select("
+            SELECT 
+                nama_wp, 
+                alamat_wp || ' ' || kelur AS alamat_wp, 
+                thn_sppt, 
+                yg_harus_byr, 
+                tgl_tempo,
+                denda_ke_1 + denda_ke_2 + denda_ke_3 + denda_ke_4 AS jml_denda_sdh_byr,
+                bayar_ke_1 + bayar_ke_2 + bayar_ke_3 + bayar_ke_4 AS yg_sdh_dibayar, 
                 CASE 
-                    WHEN SUM(
-                        (vs.BAYAR_KE_1 + vs.BAYAR_KE_2 + vs.BAYAR_KE_3 + vs.BAYAR_KE_4) - 
-                        (vs.DENDA_KE_1 + vs.DENDA_KE_2 + vs.DENDA_KE_3 + vs.DENDA_KE_4)
-                    ) >= SUM(vs.YG_HARUS_BYR) THEN 'LUNAS'
-                    
-                    WHEN SUM(
-                        (vs.BAYAR_KE_1 + vs.BAYAR_KE_2 + vs.BAYAR_KE_3 + vs.BAYAR_KE_4) - 
-                        (vs.DENDA_KE_1 + vs.DENDA_KE_2 + vs.DENDA_KE_3 + vs.DENDA_KE_4)
-                    ) = 0 THEN 'BELUM BAYAR'
-                    
-                    ELSE 'KURANG BAYAR'
-                END AS status
-            ")
-            ->whereRaw("
-                KD_PROPINSI || '.' || KD_DATI2 || '.' || KD_KECAMATAN || '.' || 
-                KD_KELURAHAN || '.' || KD_BLOK || '.' || NO_URUT || '.' || KD_JNS_OP = ?
-            ", [$nop])
-            ->groupBy('vs.THN_SPPT', 'vs.YG_HARUS_BYR', 'vs.TGL_TEMPO')
-            ->orderByDesc('vs.THN_SPPT')
-            ->get();
+                    WHEN yg_harus_byr - (
+                        (bayar_ke_1 + bayar_ke_2 + bayar_ke_3 + bayar_ke_4) - 
+                        (denda_ke_1 + denda_ke_2 + denda_ke_3 + denda_ke_4)
+                    ) <= 0 THEN 'Sdh Bayar' 
+                    WHEN yg_harus_byr - (
+                        (bayar_ke_1 + bayar_ke_2 + bayar_ke_3 + bayar_ke_4) - 
+                        (denda_ke_1 + denda_ke_2 + denda_ke_3 + denda_ke_4)
+                    ) = yg_harus_byr THEN 'Blm Bayar' 
+                    ELSE 'Krg Bayar' 
+                END AS ket 
+            FROM v_sppt_vs_bayar 
+            WHERE kd_propinsi = ? 
+              AND kd_dati2 = ? 
+              AND kd_kecamatan = ? 
+              AND kd_kelurahan = ? 
+              AND kd_blok = ? 
+              AND no_urut = ? 
+              AND kd_jns_op = ? 
+            ORDER BY thn_sppt DESC
+        ", [$satu, $dua, $tiga, $empat, $lima, $enam, $tujuh]);
     
         return view('pbb-history', compact('nop', 'history'));
     }
+    
     
     
     
