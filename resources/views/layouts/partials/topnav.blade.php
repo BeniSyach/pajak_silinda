@@ -16,6 +16,31 @@
             </a>
         </li>
 
+        {{-- Untuk Guest (belum login) --}}
+        @guest
+            <li>
+                <a href="{{ route('wp.create') }}"
+                    class="top-menu {{ request()->routeIs('wp.create') ? 'top-menu--active' : '' }}">
+                    <div class="top-menu__icon"> <i data-feather="user-plus"></i> </div>
+                    <div class="top-menu__title"> Daftarkan Wajib Pajak Baru </div>
+                </a>
+            </li>
+        @endguest
+
+        {{-- Untuk Admin (sudah login dan role admin) --}}
+        @auth
+            @if (auth()->user()->role === 'admin')
+                <li>
+                    <a href="{{ route('wp.index') }}"
+                        class="top-menu {{ request()->routeIs('wp.*') ? 'top-menu--active' : '' }}">
+                        <div class="top-menu__icon"> <i data-feather="file-text"></i> </div>
+                        <div class="top-menu__title"> Rekomendasi WP Baru (Admin) </div>
+                    </a>
+                </li>
+            @endif
+        @endauth
+
+
         @auth
             <li>
                 <a href="{{ route('target-kecamatan.index') }}"
@@ -40,6 +65,15 @@
                     <div class="top-menu__title"> Slogan </div>
                 </a>
             </li>
+            @if (auth()->user()->role === 'admin')
+                <li>
+                    <a href="{{ route('users.index') }}"
+                        class="top-menu {{ request()->routeIs('users.*') ? 'top-menu--active' : '' }}">
+                        <div class="top-menu__icon"> <i data-feather="users"></i> </div>
+                        <div class="top-menu__title"> Manajemen Pengguna </div>
+                    </a>
+                </li>
+            @endif
         @endauth
     </ul>
 </nav>

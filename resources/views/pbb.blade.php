@@ -1,7 +1,39 @@
 @extends('layouts.app')
 
 @section('title', 'Beranda')
+<style>
+    .badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 0.25rem;
+        display: inline-block;
+    }
 
+    .badge-blue {
+        background-color: #3b82f6;
+        /* Tailwind blue-500 */
+        color: white;
+    }
+
+    .badge-red {
+        background-color: #ef4444;
+        /* Tailwind red-500 */
+        color: white;
+    }
+
+    .badge-yellow {
+        background-color: #facc15;
+        /* Tailwind yellow-400 */
+        color: black;
+    }
+
+    .badge-gray {
+        background-color: #e5e7eb;
+        /* Tailwind gray-200 */
+        color: black;
+    }
+</style>
 @section('content')
     <div class="wrapper wrapper--top-nav">
         <div class="wrapper-box">
@@ -181,7 +213,16 @@
                                                     </td>
                                                     <td class="text-right">
                                                         {{ number_format($wp->yg_harus_byr, 0, ',', '.') }}</td>
-                                                    <td class="text-right">{{ $wp->status }}</td>
+                                                    <td class="p-2 border-b">
+                                                        <span
+                                                            class="badge 
+                                                                @if ($wp->status === 'LUNAS') badge-blue 
+                                                                @elseif ($wp->status === 'BELUM BAYAR') badge-red 
+                                                                @elseif ($wp->status === 'KURANG BAYAR') badge-yellow 
+                                                                @else badge-gray @endif">
+                                                            {{ $wp->status ?? '-' }}
+                                                        </span>
+                                                    </td>
                                                     <td class="text-center">
                                                         <a href="{{ route('pbb.history', ['nop' => $wp->nop]) }}"
                                                             class="btn btn-sm btn-outline-primary">Detail</a>

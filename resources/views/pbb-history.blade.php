@@ -1,5 +1,37 @@
 @extends('layouts.app')
+<style>
+    .badge {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 0.25rem;
+        display: inline-block;
+    }
 
+    .badge-blue {
+        background-color: #3b82f6;
+        /* Tailwind blue-500 */
+        color: white;
+    }
+
+    .badge-red {
+        background-color: #ef4444;
+        /* Tailwind red-500 */
+        color: white;
+    }
+
+    .badge-yellow {
+        background-color: #facc15;
+        /* Tailwind yellow-400 */
+        color: black;
+    }
+
+    .badge-gray {
+        background-color: #e5e7eb;
+        /* Tailwind gray-200 */
+        color: black;
+    }
+</style>
 @section('content')
     <div class="intro-y box p-5 mt-5">
         <h2 class="text-lg font-medium mb-4">Riwayat Pembayaran NOP: {{ $nop }}
@@ -20,8 +52,16 @@
                             <td>{{ $item->thn_sppt }}</td>
                             <td>{{ number_format($item->yg_harus_byr, 0, ',', '.') }}</td>
                             <td class="p-2 border-b">
-                                {{ $item->status ?? '-' }}
+                                <span
+                                    class="badge 
+                                    @if ($item->ket === 'Sudah Bayar') badge-blue 
+                                    @elseif ($item->ket === 'Belum Bayar') badge-red 
+                                    @elseif ($item->ket === 'Kurang Bayar') badge-yellow 
+                                    @else badge-gray @endif">
+                                    {{ $item->ket ?? '-' }}
+                                </span>
                             </td>
+
                             <td>{{ $item->tgl_tempo }}</td>
                         </tr>
                     @empty

@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\TargetKecamatan;
+use App\Models\TargetPerDesa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,7 +11,7 @@ class DashboardPajakController extends Controller
 {
     public function index(Request $request)
     {
-        $data = DB::select("
+        $dataPerKeluarahanDesa = DB::select("
             SELECT 
                 r.NM_KELURAHAN,
                 r.KD_KELURAHAN,
@@ -54,56 +55,144 @@ class DashboardPajakController extends Controller
         ")[0]; // ambil hasil pertama karena DB::select mengembalikan array
 
         $data_per_desa_penerimaan = DB::select("
-                        SELECT
+                      SELECT
+                KD_KELURAHAN,
+                NM_KELURAHAN,
+                BULAN,
+                TAHUN,
+                SUM(TOTAL_BAYAR) AS TOTAL_PENERIMAAN
+            FROM (
+                SELECT
                     vs.KD_KELURAHAN,
                     r.NM_KELURAHAN,
-                    TO_CHAR(vs.TGL_TEMPO, 'MM') AS BULAN,
-                    TO_CHAR(vs.TGL_TEMPO, 'YYYY') AS TAHUN,
-                    SUM(
-                        NVL(BAYAR_KE_1, 0) + NVL(BAYAR_KE_2, 0) +
-                        NVL(BAYAR_KE_3, 0) + NVL(BAYAR_KE_4, 0) +
-                        NVL(DENDA_KE_1, 0) + NVL(DENDA_KE_2, 0) +
-                        NVL(DENDA_KE_3, 0) + NVL(DENDA_KE_4, 0)
-                    ) AS TOTAL_PENERIMAAN
+                    TO_CHAR(vs.TGLBYR_KE_1, 'MM') AS BULAN,
+                    vs.THN_SPPT AS TAHUN,
+                    NVL(vs.BAYAR_KE_1, 0) + NVL(vs.DENDA_KE_1, 0) AS TOTAL_BAYAR
                 FROM v_sppt_vs_bayar vs
                 LEFT JOIN REF_KELURAHAN_PBB r 
                     ON vs.KD_KELURAHAN = r.KD_KELURAHAN AND vs.KD_KECAMATAN = r.KD_KECAMATAN
-                WHERE
-                    vs.KD_PROPINSI = '12'
-                    AND vs.KD_KECAMATAN = '210'
-                    AND vs.THN_SPPT = '2025'
-                    AND vs.TGL_TEMPO IS NOT NULL
-                GROUP BY
+                WHERE vs.KD_PROPINSI = '12' AND vs.KD_KECAMATAN = '210' AND vs.THN_SPPT = '2025' AND vs.TGLBYR_KE_1 IS NOT NULL
+
+                UNION ALL
+
+                SELECT
                     vs.KD_KELURAHAN,
                     r.NM_KELURAHAN,
-                    TO_CHAR(vs.TGL_TEMPO, 'YYYY'),
-                    TO_CHAR(vs.TGL_TEMPO, 'MM')
-                ORDER BY
+                    TO_CHAR(vs.TGLBYR_KE_2, 'MM') AS BULAN,
+                    vs.THN_SPPT AS TAHUN,
+                    NVL(vs.BAYAR_KE_2, 0) + NVL(vs.DENDA_KE_2, 0) AS TOTAL_BAYAR
+                FROM v_sppt_vs_bayar vs
+                LEFT JOIN REF_KELURAHAN_PBB r 
+                    ON vs.KD_KELURAHAN = r.KD_KELURAHAN AND vs.KD_KECAMATAN = r.KD_KECAMATAN
+                WHERE vs.KD_PROPINSI = '12' AND vs.KD_KECAMATAN = '210' AND vs.THN_SPPT = '2025' AND vs.TGLBYR_KE_2 IS NOT NULL
+
+                UNION ALL
+
+                SELECT
+                    vs.KD_KELURAHAN,
                     r.NM_KELURAHAN,
-                    TO_CHAR(vs.TGL_TEMPO, 'YYYY'),
-                    TO_CHAR(vs.TGL_TEMPO, 'MM')
+                    TO_CHAR(vs.TGLBYR_KE_3, 'MM') AS BULAN,
+                    vs.THN_SPPT AS TAHUN,
+                    NVL(vs.BAYAR_KE_3, 0) + NVL(vs.DENDA_KE_3, 0) AS TOTAL_BAYAR
+                FROM v_sppt_vs_bayar vs
+                LEFT JOIN REF_KELURAHAN_PBB r 
+                    ON vs.KD_KELURAHAN = r.KD_KELURAHAN AND vs.KD_KECAMATAN = r.KD_KECAMATAN
+                WHERE vs.KD_PROPINSI = '12' AND vs.KD_KECAMATAN = '210' AND vs.THN_SPPT = '2025' AND vs.TGLBYR_KE_3 IS NOT NULL
+
+                UNION ALL
+
+                SELECT
+                    vs.KD_KELURAHAN,
+                    r.NM_KELURAHAN,
+                    TO_CHAR(vs.TGLBYR_KE_4, 'MM') AS BULAN,
+                    vs.THN_SPPT AS TAHUN,
+                    NVL(vs.BAYAR_KE_4, 0) + NVL(vs.DENDA_KE_4, 0) AS TOTAL_BAYAR
+                FROM v_sppt_vs_bayar vs
+                LEFT JOIN REF_KELURAHAN_PBB r 
+                    ON vs.KD_KELURAHAN = r.KD_KELURAHAN AND vs.KD_KECAMATAN = r.KD_KECAMATAN
+                WHERE vs.KD_PROPINSI = '12' AND vs.KD_KECAMATAN = '210' AND vs.THN_SPPT = '2025' AND vs.TGLBYR_KE_4 IS NOT NULL
+            ) hasil
+            GROUP BY
+                KD_KELURAHAN,
+                NM_KELURAHAN,
+                BULAN,
+                TAHUN
+            ORDER BY
+                NM_KELURAHAN,
+                TO_NUMBER(BULAN)
             ");
 
             // Ubah ke pivot: kelurahan -> bulan -> total
             $data_per_desa = [];
-            foreach ($data_per_desa_penerimaan as $item) {
-                $nama = $item->nm_kelurahan;
-                $bulan = intval($item->bulan); // Ubah jadi angka 1-12
-                $total = $item->total_penerimaan;
 
+            foreach ($data_per_desa_penerimaan as $row) {
+                $nama = $row->nm_kelurahan;
+                $bulan = (int)$row->bulan; // sudah '01' - '12', jadi cast ke integer
+                $total = (float)$row->total_penerimaan;
+            
                 if (!isset($data_per_desa[$nama])) {
-                    $data_per_desa[$nama] = array_fill(1, 12, 0);
+                    $data_per_desa[$nama] = array_fill(1, 12, 0); // isi default 12 bulan
                 }
-
-                $data_per_desa[$nama][$bulan] = $total;
+            
+                $data_per_desa[$nama][$bulan] += $total;
             }
 
-        // Kirim data ke view dashboard
-        return view('dashboard', [
-            'data' => $data,
-            'data_penerimaan' => $penerimaan,
-            'data_per_desa' => $data_per_desa
-        ]);
+            $data_chart = [];
+
+            foreach ($data_per_desa as $nama_kelurahan => $data_bulanan) {
+                $data_chart[] = [
+                    'x' => $nama_kelurahan,
+                    'y' => array_sum($data_bulanan),
+                ];
+            }
+            $targetKecamatan = TargetKecamatan::first();
+
+            // Kelompokkan total penerimaan per kelurahan
+        $penerimaan_per_desa = [];
+        foreach ($data_per_desa_penerimaan as $row) {
+            $kode = $row->kd_kelurahan;
+            if (!isset($penerimaan_per_desa[$kode])) {
+                $penerimaan_per_desa[$kode] = [
+                    'nama_desa' => $row->nm_kelurahan,
+                    'total_penerimaan' => 0,
+                ];
+            }
+            $penerimaan_per_desa[$kode]['total_penerimaan'] += $row->total_penerimaan;
+        }
+
+        // Ambil data target per desa (MySQL secondary)
+        $targets = TargetPerDesa::all()->keyBy('kode_desa');
+
+        // Hitung persentase per desa
+        $persentase_per_desa = [];
+
+        foreach ($penerimaan_per_desa as $kode_desa => $data) {
+            $target = $targets[$kode_desa]->total_target ?? 0;
+            $realisasi = $data['total_penerimaan'];
+            $persen = $target > 0 ? ($realisasi / $target) * 100 : 0;
+
+            $persentase_per_desa[] = [
+                'kode_desa' => $kode_desa,
+                'nama_desa' => $data['nama_desa'],
+                'target' => $target,
+                'penerimaan' => $realisasi,
+                'persentase' => round($persen, 2),
+            ];
+        }
+
+        // Urutkan berdasarkan persentase
+        usort($persentase_per_desa, fn($a, $b) => $b['persentase'] <=> $a['persentase']);
+                $persen = ($penerimaan->total_penerimaan / $targetKecamatan->total_target) * 100;
+            // Kirim data ke view dashboard
+            return view('dashboard', [
+                'data' => $dataPerKeluarahanDesa,
+                'data_penerimaan' => $penerimaan,
+                'data_per_desa' => $data_per_desa,
+                'target_kecamatan' => $targetKecamatan,
+                'persen' => $persen,
+                'data_chart' => $data_chart,
+                'data_target_desa' => $persentase_per_desa
+            ]);
     }
 
     public function detail($kd_kelurahan, $status)

@@ -6,6 +6,8 @@ use App\Http\Controllers\RealisasiPajakController;
 use App\Http\Controllers\SloganController;
 use App\Http\Controllers\TargetKecamatanController;
 use App\Http\Controllers\TargetPerDesaController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WpBaruController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
@@ -41,8 +43,24 @@ Route::get('/detail-pajak/{kelurahan}/{status}', [DashboardPajakController::clas
 
 Route::get('/realisasi-pajak', [RealisasiPajakController::class, 'index'])->name('pbb.index');
 Route::get('/pbb/history/{nop}', [RealisasiPajakController::class, 'history'])->name('pbb.history');
+Route::get('/pbb/{nama_desa}', [RealisasiPajakController::class, 'perDesa'])->name('pbb.perdesa');
 
 
 Route::resource('target-kecamatan', TargetKecamatanController::class);
 Route::resource('target-desa', TargetPerDesaController::class);
 Route::resource('slogan', SloganController::class);
+
+Route::resource('users', \App\Http\Controllers\UserController::class);
+
+// Rute publik
+Route::get('/wp/create', [WpBaruController::class, 'create'])->name('wp.create');
+Route::post('/wp', [WpBaruController::class, 'store'])->name('wp.store');
+
+// Rute admin
+Route::middleware('auth')->group(function () {
+    Route::get('/wp', [WpBaruController::class, 'index'])->name('wp.index');
+    Route::get('/wp/{id}', [WpBaruController::class, 'show'])->name('wp.show');
+    Route::get('/wp/{id}/edit', [WpBaruController::class, 'edit'])->name('wp.edit');
+    Route::put('/wp/{id}', [WpBaruController::class, 'update'])->name('wp.update');
+    Route::delete('/wp/{id}', [WpBaruController::class, 'destroy'])->name('wp.destroy');
+});
