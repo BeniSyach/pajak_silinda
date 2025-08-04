@@ -10,26 +10,28 @@
         $slogans = Slogan::all();
     @endphp
 
-    <div class="bg-gradient-to-r from-green-100 via-yellow-50 to-green-100 shadow rounded-xl my-10 mx-4 px-6 py-8">
+    <div class="bg-gradient-to-r from-green-100 via-yellow-50 to-green-100  rounded-xl my-10 mx-4 px-6 py-8">
         <!-- Header Tengah -->
-        <div class="relative flex items-center justify-center mb-6">
-            <!-- Gambar Kiri -->
-            <div class="absolute left-0 flex items-center justify-center ml-4">
-                <img src="{{ asset('assets/img/bupati_dan_wakil.png') }}" alt="Bupati" width="200px">
-            </div>
+        <div class="silindak-header">
+            <div class="silindak-header-container">
+                <!-- Gambar Kiri -->
+                <div class="silindak-image-left">
+                    <img src="{{ asset('assets/img/bupati_dan_wakil.png') }}" alt="Bupati dan Wakil">
+                </div>
 
-            <!-- Teks Tengah -->
-            <div class="text-center px-4">
-                <h2 class="text-2xl sm:text-3xl font-bold text-white leading-snug">
-                    Selamat Datang Di Aplikasi<br>
-                    SILINDAK<br>
-                    <span class="text-yellow-600">(SISTEM APLIKASI PAJAK KECAMATAN SILINDA)</span>
-                </h2>
-            </div>
+                <!-- Teks Tengah -->
+                <div class="silindak-text-center">
+                    <h2>
+                        Selamat Datang Di Aplikasi<br>
+                        SILINDAK<br>
+                        <span class="silindak-text-yellow">(SISTEM INFORMASI lAYANAN PADjak)</span>
+                    </h2>
+                </div>
 
-            <!-- Gambar Kanan -->
-            <div class="absolute right-0 flex items-center justify-center mr-2">
-                <img src="{{ asset('assets/img/pak_camat.png') }}" alt="Camat" width="100px">
+                <!-- Gambar Kanan -->
+                <div class="silindak-image-right">
+                    <img src="{{ asset('assets/img/pak_camat.png') }}" alt="Pak Camat">
+                </div>
             </div>
         </div>
 
@@ -47,6 +49,210 @@
     </div>
 
     <style>
+        .silindak-header * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .silindak-header {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .silindak-header-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            min-height: 120px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .silindak-image-left {
+            position: absolute;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .silindak-image-left img {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .silindak-text-center {
+            text-align: center;
+            padding: 0 16px;
+            z-index: 2;
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .silindak-text-center h2 {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: white;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .silindak-text-yellow {
+            color: #d97706;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .silindak-image-right {
+            position: absolute;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .silindak-image-right img {
+            width: 100%;
+            max-width: 160px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .silindak-header-container {
+                flex-direction: column;
+                position: static;
+                min-height: auto;
+                gap: 20px;
+            }
+
+            .silindak-image-left,
+            .silindak-image-right {
+                position: static;
+                order: 2;
+            }
+
+            .silindak-text-center {
+                order: 1;
+                max-width: 100%;
+                padding: 0 20px;
+            }
+
+            .silindak-text-center h2 {
+                font-size: 1.25rem;
+            }
+
+            .silindak-image-left img {
+                max-width: 200px;
+            }
+
+            .silindak-image-right img {
+                max-width: 110px;
+            }
+
+            /* Layout mobile: gambar kiri - text - gambar kanan */
+            .silindak-header-container {
+                display: grid;
+                grid-template-columns: auto 1fr auto;
+                grid-template-areas: "left center right";
+                align-items: center;
+                gap: 10px;
+            }
+
+            .silindak-image-left {
+                grid-area: left;
+            }
+
+            .silindak-text-center {
+                grid-area: center;
+                order: unset;
+            }
+
+            .silindak-image-right {
+                grid-area: right;
+                order: unset;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .silindak-text-center h2 {
+                font-size: 1.1rem;
+            }
+
+            .silindak-header-container {
+                gap: 8px;
+            }
+
+            .silindak-image-left img {
+                max-width: 130px;
+            }
+
+            .silindak-image-right img {
+                max-width: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .silindak-text-center h2 {
+                font-size: 1rem;
+            }
+
+            .silindak-header-container {
+                gap: 6px;
+                padding: 0 10px;
+            }
+
+            .silindak-image-left img {
+                max-width: 110px;
+            }
+
+            .silindak-image-right img {
+                max-width: 60px;
+            }
+
+            .silindak-text-center {
+                padding: 0 8px;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 360px) {
+            .silindak-text-center h2 {
+                font-size: 0.95rem;
+            }
+
+            .silindak-image-left img {
+                max-width: 90px;
+            }
+
+            .silindak-image-right img {
+                max-width: 50px;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 360px) {
+            .silindak-text-center h2 {
+                font-size: 0.95rem;
+            }
+
+            .silindak-image-left img {
+                max-width: 90px;
+            }
+
+            .silindak-image-right img {
+                max-width: 50px;
+            }
+        }
+
         @keyframes marquee {
             0% {
                 transform: translateX(100%);
