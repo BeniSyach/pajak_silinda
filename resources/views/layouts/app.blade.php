@@ -10,9 +10,9 @@
         $slogans = Slogan::all();
     @endphp
 
-    <div class="bg-gradient-to-r from-green-100 via-yellow-50 to-green-100  rounded-xl my-10 mx-4 px-6 py-8">
+    <div class="bg-gradient-to-r from-green-100 via-yellow-50 to-green-100  rounded-xl">
         <!-- Header Tengah -->
-        <div class="silindak-header">
+        {{-- <div class="silindak-header">
             <div class="silindak-header-container">
                 <!-- Gambar Kiri -->
                 <div class="silindak-image-left">
@@ -33,13 +33,19 @@
                     <img src="{{ asset('assets/img/pak_camat.png') }}" alt="Pak Camat">
                 </div>
             </div>
+        </div> --}}
+
+        {{-- banner --}}
+        <div class="silindak-header-banner mb-4">
+            <img src="{{ asset('assets/img/banner.jpeg') }}" alt="banner"
+                class="w-full h-auto rounded-lg shadow-md object-cover">
         </div>
 
         <!-- Slogan Berjalan -->
         @if ($slogans->isNotEmpty())
-            <div class="overflow-hidden px-2">
+            <div class="overflow-hidden px-2 mb-5">
                 <div
-                    class="inline-block animate-marquee text-lg sm:text-xl text-white font-medium tracking-wide py-3 mt-5">
+                    class="inline-block animate-marquee text-lg sm:text-xl text-white font-medium tracking-wide py-2 mt-2 mb-5">
                     @foreach ($slogans as $slogan)
                         <span class="mx-10">🌟 {{ $slogan->isi }}</span>
                     @endforeach
@@ -123,6 +129,19 @@
             max-width: 160px;
             height: auto;
             object-fit: contain;
+        }
+
+        .silindak-header-banner {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .silindak-header-banner img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 12px;
         }
 
         /* Responsive Design */
