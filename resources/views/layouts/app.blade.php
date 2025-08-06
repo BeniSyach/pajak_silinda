@@ -24,7 +24,7 @@
                     <h2>
                         Selamat Datang Di Aplikasi<br>
                         SILINDAK<br>
-                        <span class="silindak-text-yellow">(SISTEM INFORMASI lAYANAN PADjak)</span>
+                        <span class="silindak-text-yellow">(SISTEM INFORMASI LAYANAN PADjak)</span>
                     </h2>
                 </div>
 

@@ -174,23 +174,31 @@
 
                                 <!-- Judul -->
                                 <div class="intro-y block sm:flex items-center h-10 mt-5">
-                                    <h2 class="text-lg font-medium truncate mr-5">Data Wajib Pajak Kecamatan Silinda</h2>
+                                    <h2 class="text-lg font-medium truncate mr-5">Data Wajib Pajak Kecamatan Silinda Desa
+                                        {{ $nama_desa }}</h2>
                                 </div>
 
-                                <!-- Search Form -->
-                                <form method="GET" action="{{ route('pbb.index') }}" class="mt-4">
-                                    <div class="flex items-center gap-2">
+                                <!-- Search + Info -->
+                                <div class="flex flex-col sm:flex-row justify-between items-center gap-2 mt-4">
+                                    <form method="GET" action="{{ route('pbb.perdesa', ['nama_desa' => $nama_desa]) }}"
+                                        class="flex gap-2 w-full sm:w-auto">
                                         <input type="text" name="search" value="{{ request('search') }}"
                                             class="input w-full sm:w-64 box" placeholder="Cari NOP, Nama, atau Alamat...">
                                         <button type="submit" class="btn btn-primary">Cari</button>
+                                    </form>
+
+                                    <div class="text-sm text-gray-600 mt-2 sm:mt-0">
+                                        Menampilkan {{ $data_wp->firstItem() }} - {{ $data_wp->lastItem() }} dari total
+                                        {{ $data_wp->total() }} data
                                     </div>
-                                </form>
+                                </div>
 
                                 <!-- Table -->
                                 <div id="table-data-wp" class="intro-y overflow-auto mt-8 sm:mt-0">
                                     <table class="table table-report table-report--small sm:mt-0">
                                         <thead>
                                             <tr>
+                                                <th class="whitespace-nowrap">#</th> <!-- Tambah ini -->
                                                 <th class="whitespace-nowrap">NOP</th>
                                                 <th class="whitespace-nowrap">NAMA WP</th>
                                                 <th class="whitespace-nowrap">ALAMAT</th>
@@ -202,8 +210,9 @@
                                             </tr>
                                         </thead>
                                         <tbody class="text-xs">
-                                            @forelse ($data_wp as $wp)
+                                            @forelse ($data_wp as $index => $wp)
                                                 <tr>
+                                                    <td class="text-center">{{ $data_wp->firstItem() + $index }}</td>
                                                     <td class="whitespace-nowrap">{{ $wp->nop }}</td>
                                                     <td class="whitespace-nowrap">{{ $wp->nama_wp }}</td>
                                                     <td class="whitespace-nowrap">{{ $wp->alamat }}</td>
