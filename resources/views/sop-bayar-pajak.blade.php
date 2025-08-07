@@ -104,14 +104,16 @@
         display: none;
         position: fixed;
         z-index: 999;
-        padding-top: 60px;
+        top: 70px;
+        /* ⬅️ Tambahkan jarak dari atas */
         left: 0;
-        top: 0;
         width: 100%;
-        height: 100%;
+        height: calc(100% - 70px);
+        /* ⬅️ Kurangi tinggi agar tetap penuh tapi tidak tabrakan */
         overflow: auto;
         background-color: rgba(0, 0, 0, 0.8);
     }
+
 
     .sop-modal-content {
         margin: auto;
@@ -136,6 +138,12 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+        }
+
+        .sop-title {
+            font-size: 1.5rem;
+            padding: 0 10px;
+            line-height: 1.4;
         }
 
         .sop-arrow {
@@ -196,7 +204,7 @@
 
                 <!-- Modal -->
                 <div id="sopImgModal" class="sop-modal" onclick="sopCloseModal()">
-                    <span class="sop-close" onclick="sopCloseModal()">&times;</span>
+                    <span class="sop-close" onclick="event.stopPropagation(); sopCloseModal()">&times;</span>
                     <img class="sop-modal-content" id="sopModalImg" />
                 </div>
             </div>
