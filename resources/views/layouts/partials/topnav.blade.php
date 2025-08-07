@@ -75,5 +75,13 @@
                 </li>
             @endif
         @endauth
+
+        <li>
+            <a href="{{ route('sop.bayar.pbb') }}"
+                class="top-menu {{ request()->routeIs('sop.bayar.pbb') ? 'top-menu--active' : '' }}">
+                <div class="top-menu__icon"> <i data-feather="box"></i> </div>
+                <div class="top-menu__title"> SOP Pembayaran PBB </div>
+            </a>
+        </li>
     </ul>
 </nav>

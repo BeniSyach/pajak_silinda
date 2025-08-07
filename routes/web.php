@@ -45,6 +45,9 @@ Route::get('/realisasi-pajak', [RealisasiPajakController::class, 'index'])->name
 Route::get('/pbb/history/{nop}', [RealisasiPajakController::class, 'history'])->name('pbb.history');
 Route::get('/pbb/{nama_desa}', [RealisasiPajakController::class, 'perDesa'])->name('pbb.perdesa');
 
+Route::get('/sop-bayar-pbb', function () {
+    return view('sop-bayar-pajak');
+})->name('sop.bayar.pbb');
 
 Route::resource('target-kecamatan', TargetKecamatanController::class);
 Route::resource('target-desa', TargetPerDesaController::class);

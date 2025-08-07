@@ -302,6 +302,7 @@
     </script>
     <script src="{{ asset('assets/js/gauge.min.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
+
     @include('layouts.partials.scripts')
 </body>
 
