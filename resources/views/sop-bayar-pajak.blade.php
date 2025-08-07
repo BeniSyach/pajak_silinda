@@ -13,6 +13,16 @@
         align-items: center;
     }
 
+    .sop-title {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 30px;
+        margin-top: 30px;
+        color: #1a202c;
+    }
+
+
     .sop-step {
         background: #fff;
         padding: 15px;
@@ -146,8 +156,7 @@
     <div class="wrapper wrapper--top-nav">
         <div class="wrapper-box">
             <div class="content">
-                <h1>Alur Pembayaran PBB via SUMUT Mobile</h1>
-
+                <h1 class="sop-title">Alur Pembayaran PBB via SUMUT Mobile</h1>
                 <div class="sop-alur">
                     <div class="sop-step sop-s1">
                         <img src="{{ asset('assets/img/bayar-pbb-ke-1.jpeg') }}" alt="Langkah 1"
