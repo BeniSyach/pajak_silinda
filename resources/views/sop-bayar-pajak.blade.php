@@ -3,7 +3,7 @@
 @section('title', 'Alur Pembayaran PBB')
 
 <style>
-    .alur {
+    .sop-alur {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: auto auto;
@@ -13,14 +13,14 @@
         align-items: center;
     }
 
-    .step {
+    .sop-step {
         background: #fff;
         padding: 15px;
         border-radius: 8px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
-    .step img {
+    .sop-step img {
         width: 100%;
         max-height: 280px;
         object-fit: cover;
@@ -29,68 +29,68 @@
         transition: transform 0.3s ease;
     }
 
-    .step img:hover {
+    .sop-step img:hover {
         transform: scale(1.03);
     }
 
-    .arrow {
+    .sop-arrow {
         font-size: 32px;
     }
 
-    .s1 {
+    .sop-s1 {
         grid-column: 1;
         grid-row: 1;
     }
 
-    .a1 {
+    .sop-a1 {
         grid-column: 2;
         grid-row: 1;
     }
 
-    .s2 {
+    .sop-s2 {
         grid-column: 3;
         grid-row: 1;
     }
 
-    .a2 {
+    .sop-a2 {
         grid-column: 4;
         grid-row: 1;
     }
 
-    .s3 {
+    .sop-s3 {
         grid-column: 5;
         grid-row: 1;
     }
 
-    .ad {
+    .sop-ad {
         grid-column: 5;
         grid-row: 2;
         font-size: 40px;
     }
 
-    .s4 {
+    .sop-s4 {
         grid-column: 4;
         grid-row: 2;
     }
 
-    .a3 {
+    .sop-a3 {
         grid-column: 3;
         grid-row: 2;
     }
 
-    .s5 {
+    .sop-s5 {
         grid-column: 2;
         grid-row: 2;
     }
 
-    h3 {
+    .sop-step h3 {
         margin: 10px 0 0;
         font-size: 16px;
         color: #2c3e50;
     }
 
-    /* Modal Styles */
-    .modal {
+    /* Modal */
+    .sop-modal {
         display: none;
         position: fixed;
         z-index: 999;
@@ -103,7 +103,7 @@
         background-color: rgba(0, 0, 0, 0.8);
     }
 
-    .modal-content {
+    .sop-modal-content {
         margin: auto;
         display: block;
         max-width: 90%;
@@ -111,7 +111,7 @@
         border-radius: 10px;
     }
 
-    .close {
+    .sop-close {
         position: absolute;
         top: 20px;
         right: 35px;
@@ -122,21 +122,21 @@
     }
 
     @media (max-width: 768px) {
-        .alur {
+        .sop-alur {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
-        .arrow {
+        .sop-arrow {
             transform: rotate(90deg);
         }
 
-        .ad {
+        .sop-ad {
             transform: rotate(0deg);
         }
 
-        .step img {
+        .sop-step img {
             max-height: 140px;
         }
     }
@@ -148,64 +148,62 @@
             <div class="content">
                 <h1>Alur Pembayaran PBB via SUMUT Mobile</h1>
 
-                <div class="alur">
-                    <!-- Baris atas -->
-                    <div class="step s1">
+                <div class="sop-alur">
+                    <div class="sop-step sop-s1">
                         <img src="{{ asset('assets/img/bayar-pbb-ke-1.jpeg') }}" alt="Langkah 1"
-                            onclick="openModal(this.src)" />
+                            onclick="sopOpenModal(this.src)" />
                         <h3>1. Buka aplikasi SUMUT Mobile</h3>
                     </div>
-                    <div class="arrow a1">➡️</div>
+                    <div class="sop-arrow sop-a1">➡️</div>
 
-                    <div class="step s2">
+                    <div class="sop-step sop-s2">
                         <img src="{{ asset('assets/img/bayar-pbb-ke-2.jpeg') }}" alt="Langkah 2"
-                            onclick="openModal(this.src)" />
+                            onclick="sopOpenModal(this.src)" />
                         <h3>2. Pilih Pajak & Retribusi</h3>
                     </div>
-                    <div class="arrow a2">➡️</div>
+                    <div class="sop-arrow sop-a2">➡️</div>
 
-                    <div class="step s3">
+                    <div class="sop-step sop-s3">
                         <img src="{{ asset('assets/img/bayar-pbb-ke-3.jpeg') }}" alt="Langkah 3"
-                            onclick="openModal(this.src)" />
+                            onclick="sopOpenModal(this.src)" />
                         <h3>3. Pilih PBB</h3>
                     </div>
 
-                    <!-- <div class="arrow ad">⬇️</div> -->
-                    <div class="arrow ad">⬅️</div>
+                    <div class="sop-arrow sop-ad">⬅️</div>
 
-                    <!-- Baris bawah -->
-                    <div class="step s4">
+                    <div class="sop-step sop-s4">
                         <img src="{{ asset('assets/img/bayar-pbb-ke-4.jpeg') }}" alt="Langkah 4"
-                            onclick="openModal(this.src)" />
+                            onclick="sopOpenModal(this.src)" />
                         <h3>4. Pilih PEMKAB Serdang Bedagai</h3>
                     </div>
-                    <div class="arrow a3">⬅️</div>
+                    <div class="sop-arrow sop-a3">⬅️</div>
 
-                    <div class="step s5">
+                    <div class="sop-step sop-s5">
                         <img src="{{ asset('assets/img/bayar-pbb-ke-5.jpeg') }}" alt="Langkah 5"
-                            onclick="openModal(this.src)" />
+                            onclick="sopOpenModal(this.src)" />
                         <h3>5. Masukkan Data Pembayaran</h3>
                     </div>
                 </div>
 
                 <!-- Modal -->
-                <div id="imgModal" class="modal" onclick="closeModal()">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                    <img class="modal-content" id="modalImg" />
+                <div id="sopImgModal" class="sop-modal" onclick="sopCloseModal()">
+                    <span class="sop-close" onclick="sopCloseModal()">&times;</span>
+                    <img class="sop-modal-content" id="sopModalImg" />
                 </div>
             </div>
         </div>
     </div>
+
     <script>
-        function openModal(src) {
-            const modal = document.getElementById("imgModal");
-            const modalImg = document.getElementById("modalImg");
+        function sopOpenModal(src) {
+            const modal = document.getElementById("sopImgModal");
+            const modalImg = document.getElementById("sopModalImg");
             modal.style.display = "block";
             modalImg.src = src;
         }
 
-        function closeModal() {
-            document.getElementById("imgModal").style.display = "none";
+        function sopCloseModal() {
+            document.getElementById("sopImgModal").style.display = "none";
         }
     </script>
 @endsection
